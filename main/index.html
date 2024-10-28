@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>換證系統</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <style background: #000;></style>
+</head>
+<body>
+    <div class="container">
+        <h1>中科大圖書館換證系統</h1>
+        <form id="visitorForm">
+            <div class="form-group">
+                <label for="id">身分證字號:</label>
+                <input type="text" id="id" required />
+            </div>
+
+            <div class="form-group">
+                <label for="name">姓名:</label>
+                <input type="text" id="name" required />
+            </div>
+
+            <div class="form-group">
+                <label for="phone">電話:</label>
+                <input type="tel" id="phone" required />
+            </div>
+
+            <div class="form-group">
+                <label>證件:</label>
+                <div class="button-group">
+                    <button type="button" class="id-button" onclick="selectIdType('健保卡')">健保卡</button>
+                    <button type="button" class="id-button" onclick="selectIdType('身分證')">身分證</button>
+                    <button type="button" class="id-button" onclick="selectIdType('駕照')">駕照</button>
+                    <button type="button" class="id-button" onclick="selectIdType('其他')">其他</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>身分:</label>
+                <div class="button-group">
+                    <button type="button" class="identity-button" onclick="selectIdentityType('一般')">一般</button>
+                    <button type="button" class="identity-button" onclick="selectIdentityType('敬老')">敬老</button>
+                    <button type="button" class="identity-button" onclick="selectIdentityType('一中')">一中</button>
+                    <button type="button" class="identity-button" onclick="selectIdentityType('高中職')">高中職</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>進館時間:</label>
+                <input type="text" id="entryTime" disabled />
+            </div>
+
+            <div class="form-group">
+                <label>離館時間:</label>
+                <input type="text" id="exitTime" disabled />
+            </div>
+
+            <div class="button-group">
+                <button type="button" onclick="markEntry()">進館</button>
+                <button type="button" onclick="markExit()">離館</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let selectedIdType = '';
+        let selectedIdentityType = '';
+
+        function selectIdType(type) {
+            selectedIdType = type;
+            alert(`已選擇證件: ${type}`);
+        }
+
+        function selectIdentityType(type) {
+            selectedIdentityType = type;
+            alert(`已選擇身分: ${type}`);
+        }
+
+        function markEntry() {
+            const entryTime = new Date().toLocaleString();
+            document.getElementById("entryTime").value = entryTime;
+            alert(`進館時間已記錄: ${entryTime}`);
+        }
+
+        function markExit() {
+            const exitTime = new Date().toLocaleString();
+            document.getElementById("exitTime").value = exitTime;
+            alert(`離館時間已記錄: ${exitTime}`);
+        }
+    </script>
+</body>
+</html>
