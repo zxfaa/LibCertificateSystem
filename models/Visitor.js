@@ -19,11 +19,11 @@ const Visitor = sequelize.define('Visitors', {
     },
     id_type: {
         type: DataTypes.STRING(20),
-        allowNull: false
+        allowNull: true
     },
     identity_type: {
         type: DataTypes.STRING(20),
-        allowNull: false
+        allowNull: true
     },
     entry_time: {
         type: DataTypes.DATE,
@@ -35,11 +35,11 @@ const Visitor = sequelize.define('Visitors', {
     },
     is_entered: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: true
     },
     ban: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: true
     },
     remarks: {
         type: DataTypes.STRING(50),
