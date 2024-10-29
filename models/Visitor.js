@@ -4,7 +4,6 @@ const sequelize = require('../config/database');
 
 const Visitor = sequelize.define('Visitors', {
     id: {
-        type: DataTypes.INTEGER,
         primaryKey: true, // 標註這是主鍵
         type: DataTypes.STRING(20),
         allowNull: false

@@ -22,4 +22,4 @@ async function deleteVisitor(visitorId) {
 }
 
 // 測試刪除訪客
-deleteVisitor("A123456789"); // 替換為你想刪除的訪客 ID
+deleteVisitor("R125038667"); // 替換為你想刪除的訪客 ID
