@@ -31,11 +31,12 @@ async function queryVisitor() {
             body: JSON.stringify({ id: visitorId })
         });
 
-        const data = await response.json(); // 無論成功與否都先解析 JSON
+        const data = await response.json();
 
         if (data.exists) {
-            // 將返回的資料填入到對應的欄位中
             const visitor = data.visitor;
+            const certificateReplacementNumber = data.certificateReplacementNumber;
+
             if (visitor.is_entered) {
                 document.getElementById('name').value = visitor.name;
                 document.getElementById('phone').value = visitor.phone;
@@ -43,21 +44,18 @@ async function queryVisitor() {
                 document.getElementById('selectedIdentityType').value = visitor.identity_type;
                 document.getElementById('entryTime').value = visitor.entry_time ? new Date(visitor.entry_time).toLocaleString() : '';
                 document.getElementById('exitTime').value = visitor.exit_time ? new Date(visitor.exit_time).toLocaleString() : '';
-
+                document.getElementById('certificateReplacementNumber').value = certificateReplacementNumber || ''; // 填入換證編號
             } else {
-                // 若未進館，填入 name、phone 和 ID
                 document.getElementById('name').value = visitor.name;
                 document.getElementById('phone').value = visitor.phone;
-                document.getElementById('id').value = visitorId; // 設置 ID
-                // 可選：清空其他欄位或進行其他操作
+                document.getElementById('id').value = visitorId;
                 document.getElementById('selectedIdType').value = '';
                 document.getElementById('selectedIdentityType').value = '';
                 document.getElementById('entryTime').value = '';
                 document.getElementById('exitTime').value = '';
+                document.getElementById('certificateReplacementNumber').value = '';
             }
-
         } else {
-            // 訪客不存在時打開模態框
             document.getElementById('rulesModal').style.display = 'block';
         }
     } catch (error) {
@@ -163,9 +161,37 @@ async function markEntry() {
     }
     location.reload();
 }
+
+async function markExit() {
+    const visitorId = document.getElementById('id').value;
+    try {
+        const response = await fetch('http://localhost:3000/api/visitors/mark-exit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: visitorId })
+        });
+        const data = await response.json();
+        if (response.ok) {
+            alert(data.message); // 離館成功提示
+            location.reload();
+        } else {
+            alert('離館失敗：' + data.error);
+        }
+    } catch (error) {
+        console.error('Fetch error:', error);
+        alert('離館請求發生錯誤');
+    }
+}
+
 function acceptAndClose() {
-    // 在這裡可以添加接受後的邏輯
     closeModal();
+    document.getElementById('name').value = '';
+    document.getElementById('phone').value = '';
+    document.getElementById('selectedIdType').value = '';
+    document.getElementById('selectedIdentityType').value = '';
+    document.getElementById('entryTime').value = '';
+    document.getElementById('exitTime').value = '';
+    document.getElementById('certificateReplacementNumber').value = '';
 }
 
 function rejectAndClose() {

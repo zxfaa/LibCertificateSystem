@@ -11,6 +11,35 @@ async function getVisitorById(visitorId) {
     return visitor; // 如果找到，返回訪客資料，否則返回 null
 }
 
+// 根據身份類型及 visitorId 獲取換證編號
+async function getCertificateReplacementNumberByVisitorId(identityType, visitorId) {
+    let model;
+    
+    switch (identityType) {
+        case '一般':
+            model = GeneralPublic;
+            break;
+        case '高中職':
+            model = HighSchool;
+            break;
+        case '一中':
+            model = TcfshStudent;
+            break;
+        case '敬老':
+            model = Vip;
+            break;
+        default:
+            throw new Error('未知的身份類型');
+    }
+
+    const record = await model.findOne({
+        where: { visitor_id: visitorId },
+        attributes: ['id']
+    });
+
+    return record ? record.id : null;
+}
+
 // 新增訪客資料
 async function addVisitor(visitorData) {
     const newVisitor = await Visitor.create(visitorData);
@@ -105,6 +134,43 @@ async function syncToIdentityTable(identity_type,id,visitor_id) {
                         visitor_id: id // 將 visitor_id 設置為頁面上輸入的 ID
     });
 }
+// services/visitorService.js
+async function markExit(visitorId) {
+    // 查找 visitor 資料
+    const visitor = await Visitor.findByPk(visitorId);
+    if (!visitor) {
+        throw new Error('找不到訪客資料');
+    }
+
+    // 更新 visitor 的 is_entered 狀態和 exit_time
+    visitor.is_entered = false;
+    visitor.exit_time = new Date();
+    await visitor.save();
+
+    // 根據 identity_type 刪除對應表中的資料
+    let model;
+    switch (visitor.identity_type) {
+        case '一般':
+            model = GeneralPublic;
+            break;
+        case '高中職':
+            model = HighSchool;
+            break;
+        case '一中':
+            model = TcfshStudent;
+            break;
+        case '敬老':
+            model = Vip;
+            break;
+        default:
+            throw new Error('未知的身份類型');
+    }
+
+    // 刪除對應身份類型資料表中的紀錄
+    await model.destroy({
+        where: { visitor_id: visitorId }
+    });
+}
 
 
 
@@ -114,4 +180,6 @@ module.exports = {
     getNextAvailableId,
     updateVisitorEntry,
     syncToIdentityTable,
+    getCertificateReplacementNumberByVisitorId,
+    markExit
 };

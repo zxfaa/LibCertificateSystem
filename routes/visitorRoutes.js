@@ -14,5 +14,8 @@ router.post('/certificate-replacement-number', visitorController.getCertificateR
 
 // 記錄進館
 router.post('/mark-entry', visitorController.markEntry);
+//紀錄離館
+router.post('/mark-exit', visitorController.markExit);
+
 
 module.exports = router;

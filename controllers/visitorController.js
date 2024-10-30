@@ -2,6 +2,7 @@
 const visitorService = require('../services/visitorService');
 
 // 檢查訪客 ID
+// 檢查訪客 ID
 async function checkVisitor(req, res) {
     try {
         const visitorId = req.body.id;
@@ -15,10 +16,14 @@ async function checkVisitor(req, res) {
             });
         }
 
-        // 找到訪客時，返回訪客資料
+        // 根據身份類型及 visitorId 獲取換證編號
+        const certificateReplacementNumber = await visitorService.getCertificateReplacementNumberByVisitorId(visitor.identity_type, visitorId);
+
+        // 找到訪客時，返回訪客資料以及換證編號
         return res.status(200).json({ 
             exists: true, 
-            visitor 
+            visitor,
+            certificateReplacementNumber
         });
     } catch (error) {
         // 真正的錯誤情況
@@ -62,6 +67,17 @@ async function markEntry(req, res) {
     }
 }
 
+async function markExit(req, res) {
+    try {
+        const visitorId = req.body.id;
+        await visitorService.markExit(visitorId);
+        res.status(200).json({ message: '離館成功' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+
 //獲得當前的換證編號
 async function getCertificateReplacementNumber(req, res) {
     try {
@@ -77,5 +93,6 @@ module.exports = {
     getCertificateReplacementNumber,
     checkVisitor,
     createVisitor,
-    markEntry
+    markEntry,
+    markExit
 };
