@@ -117,6 +117,27 @@ input:disabled {
     background-color: #d35400;
     transform: translateY(-1px);
 }
+.button-center {
+    grid-column: span 2;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.query-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.query-button {
+    margin: 15px 0; /* 修改 margin，移除 display: block */
+}
+
+.add-button {
+    margin: 15px 0; /* 修改 margin */
+    margin-left: 0; /* 移除左邊距 */
+}
 
 
 /* 證件按鈕樣式 */
