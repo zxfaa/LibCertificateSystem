@@ -18,6 +18,10 @@ app.use('/api/visitors', visitorRoutes); // 使用 visitorRoutes
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'client', 'index.html')); // 確保路徑正確
 });
+app.get("/server",(req,res) =>{
+    res.sendFile(path.join(__dirname, 'client', 'server.html')); // 確保路徑正確
+
+});
 
 // 啟動伺服器
 app.listen(PORT, () => {

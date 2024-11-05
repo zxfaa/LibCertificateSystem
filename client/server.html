@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中科大圖書館換證管理系統</title>
+    <link rel="stylesheet" href="css/severStyle.css">
+   
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>訪客資料管理</h1>
+        </div>
+
+        <div class="search-section">
+            <input type="text" id="id" placeholder="輸入訪客ID">
+            <button class="search-button" onclick="searchVisitor()">查詢</button>
+        </div>
+
+        <form id="visitorForm">
+            <div class="grid-container">
+                <div class="form-group">
+                    <label for="name">姓名</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">電話</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="identity">身分</label>
+                    <input type="text" id="identity" name="identity">
+                </div>
+
+                <div class="form-group">
+                    <label for="idType">證件類型</label>
+                    <input type = "text" id="idType" name="idType">
+                </div>
+                <div class="form-group">
+                    <label for="exchangeNumber">換證編號</label>
+                    <input type="text" id="exchangeNumber" name="exchangeNumber" required>
+                </div>
+                <div class="form-group">
+                    <label for="isEnter">是否進館</label>
+                    <select id="isEnter" name="isEnter" required>
+                        <option value="true">是</option>
+                        <option value="false">否</option>
+                    </select>
+                </div>
+                
+
+                <div class="form-group">
+                    <label for="entryTime">進入時間</label>
+                    <input type="datetime-local" id="entryTime" name="entryTime">
+                </div>
+
+                <div class="form-group">
+                    <label for="exitTime">離開時間</label>
+                    <input type="datetime-local" id="exitTime" name="exitTime">
+                </div>
+
+                <div class="form-group">
+                    <label for="ban">停權狀態</label>
+                    <select id="ban" name="ban">
+                        <option value="false">正常</option>
+                        <option value="true">停權</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label for="remarks">備註</label>
+                    <input type="text" id="remarks" name="remarks">
+                </div>
+            </div>
+
+            <div class="actions">
+                <button type="button" onclick="resetForm()">重置</button>
+                <button type="button" onclick="updateVisitor()">修改</button>
+            </div>
+        </form>
+    </div>
+    <script src="script/serverScript.js"></script>
+</body>
+</html>

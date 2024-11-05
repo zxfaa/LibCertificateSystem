@@ -172,6 +172,44 @@ async function markExit(visitorId) {
     });
 }
 
+// 更新訪客資料
+async function updateVisitor(visitorId, updatedData) {
+    const visitor = await Visitor.findByPk(visitorId);
+    if (!visitor) {
+        throw new Error('找不到訪客資料');
+    }
+
+    // 更新訪客的屬性
+    Object.assign(visitor, updatedData);
+    await visitor.save();
+}
+
+// 根據身份類型刪除對應身份表中的資料
+async function deleteVisitorById(identity_type, visitorId) {
+    let model;
+
+    switch (identity_type) {
+        case '一般':
+            model = GeneralPublic;
+            break;
+        case '高中職':
+            model = HighSchool;
+            break;
+        case '一中':
+            model = TcfshStudent;
+            break;
+        case '敬老':
+            model = Vip;
+            break;
+        default:
+            throw new Error('未知的身份類型');
+    }
+
+    // 刪除對應身份類型資料表中的紀錄
+    await model.destroy({
+        where: { visitor_id: visitorId }
+    });
+}
 
 
 module.exports = {
@@ -181,5 +219,7 @@ module.exports = {
     updateVisitorEntry,
     syncToIdentityTable,
     getCertificateReplacementNumberByVisitorId,
-    markExit
+    markExit,
+    updateVisitor,
+    deleteVisitorById
 };

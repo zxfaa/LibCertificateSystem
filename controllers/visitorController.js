@@ -89,10 +89,49 @@ async function getCertificateReplacementNumber(req, res) {
     }
 }
 
+// 更新訪客資料
+async function updateVisitor(req, res) {
+    try {
+        const visitorId = req.body.id;
+        const updatedData = {
+            name: req.body.name,
+            phone: req.body.phone,
+            identity_type: req.body.identity,
+            id_type: req.body.idType,
+            exchange_number: req.body.exchangeNumber,
+            is_entered: req.body.isEnter === 'true', // 轉換為布林值
+            entry_time: req.body.entryTime ? new Date(req.body.entryTime) : null,
+            exit_time: req.body.exitTime ? new Date(req.body.exitTime) : null,
+            ban_status: req.body.ban === 'true', // 轉換為布林值
+            remarks: req.body.remarks,
+        };
+
+        // 查找訪客資料
+        const visitor = await visitorService.getVisitorById(visitorId);
+        if (!visitor) {
+            return res.status(404).json({ message: '找不到訪客資料' });
+        }
+
+        // 更新訪客資料
+        await visitorService.updateVisitor(visitorId, updatedData);
+
+        // 如果是進館狀態被改為否，則刪除對應身份資料
+        if (updatedData.is_entered === false) {
+            await visitorService.deleteVisitorById(visitor.identity_type, visitorId);
+        }
+
+        return res.status(200).json({ message: '訪客資料更新成功' });
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+}
+
+
 module.exports = {
     getCertificateReplacementNumber,
     checkVisitor,
     createVisitor,
     markEntry,
-    markExit
+    markExit,
+    updateVisitor
 };
