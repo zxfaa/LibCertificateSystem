@@ -28,10 +28,6 @@
 ## 安裝步驟
 
 ### 1. 下載專案
-```bash
-git clone [專案 URL]
-cd library-management-system
-```
 
 ### 2. 安裝相依套件
 ```bash
@@ -75,23 +71,6 @@ node server.js
 成功啟動後，您會看到以下訊息：
 - 伺服器正在運行於 http://localhost:3000
 - 資料庫連接正常
-
-## 專案結構
-```
-library-management-system/
-├── client/                 # 前端文件
-│   ├── index.html         # 主頁面（換證系統）
-│   ├── server.html        # 後台管理頁面
-│   ├── css/              # 樣式文件
-│   └── js/               # JavaScript 文件
-├── config/                # 配置文件
-│   └── database.js       # 資料庫配置
-├── Database/             # 資料庫備份
-│   └── *.sql            # 資料庫結構和資料
-├── routes/               # 路由文件
-│   └── visitorRoutes.js  # 訪客相關路由
-└── server.js            # 主程序入口
-```
 
 ## API 文檔
 
